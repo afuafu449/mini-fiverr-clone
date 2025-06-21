@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Fiverr Clone – Sign In</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="style.css" rel="stylesheet">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-tr from-teal-500 to-indigo-700 min-h-screen flex items-center justify-center">
+  <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
+    <h1 class="text-3xl font-extrabold text-center mb-6 text-indigo-600">Mini Fiverr Clone</h1>
+
+    <!-- ==== Auth form ==== -->
+    <form id="authForm" class="space-y-4">
+      <input id="email" type="email" placeholder="Email" class="w-full input"/>
+      <input id="password" type="password" placeholder="Password" class="w-full input"/>
+
+      <!-- radio: role -->
+      <div class="flex items-center justify-center gap-6 text-sm">
+        <label><input type="radio" name="role" value="freelancer" required> Freelancer</label>
+        <label><input type="radio" name="role" value="client" required> Client</label>
+      </div>
+
+      <button type="submit" class="btn w-full bg-indigo-600 hover:bg-indigo-700 text-white">Sign Up / Log In</button>
+    </form>
+
+    <p id="authError" class="text-red-600 text-center mt-4 hidden"></p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="firebaseConfig.js"></script>
+  <script>
+    // === Auth logic ===
+    const auth = firebase.auth();
+    const db   = firebase.firestore();
+    const form = document.getElementById('authForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      const pass  = form.password.value.trim();
+      const role  = form.role.value;
+
+      try {
+        const cred = await auth.signInWithEmailAndPassword(email, pass)
+          .catch(() => auth.createUserWithEmailAndPassword(email, pass));
+
+        // If this is a first‑time user, save role
+        if (cred.additionalUserInfo?.isNewUser) {
+          await db.collection('users').doc(cred.user.uid).set({ email, role });
+        }
+        // redirect
+        location.href = 'dashboard.html';
+      } catch (err) {
+        document.getElementById('authError').textContent = err.message;
+        document.getElementById('authError').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
