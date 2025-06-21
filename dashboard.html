@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Fiverr – Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="style.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <nav class="bg-white shadow px-8 py-4 flex justify-between">
+    <h2 class="text-xl font-bold text-indigo-600">Mini Fiverr</h2>
+    <button id="logoutBtn" class="text-sm text-red-600">Log Out</button>
+  </nav>
+
+  <main class="flex-1 p-6 flex flex-col gap-10">
+    <!-- ===== Section for posting job / gig ===== -->
+    <section id="postSection" class="bg-white p-6 rounded-xl shadow-lg hidden"></section>
+
+    <!-- ===== Lists ===== -->
+    <h3 class="text-2xl font-semibold text-indigo-700">Open Jobs</h3>
+    <div id="jobsList" class="grid md:grid-cols-2 gap-6"></div>
+
+    <h3 id="gigsHeader" class="text-2xl font-semibold text-indigo-700 mt-10">Freelancer Gigs</h3>
+    <div id="gigsList" class="grid md:grid-cols-2 gap-6"></div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="firebaseConfig.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
